@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useAuth } from "../../hooks/useAuth";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 import Logo from "../../UI/Logo/Logo";
 import NavItem from "./NavItem/NavItem";
 
@@ -32,7 +34,7 @@ const UL = styled.ul`
   flex-direction: row;
 `;
 
-const loggedInNavs = [
+const loggedOutNavs = [
   {
     id: 1,
     label: "Home",
@@ -50,15 +52,36 @@ const loggedInNavs = [
   },
 ];
 
+const loggedInNavs = [
+  {
+    id: 1,
+    label: "Home",
+    link: "/",
+  },
+  {
+    id: 2,
+    label: "Logout",
+    link: "logout",
+  },
+];
+
 const Navbar = () => {
+  const { isLoggedIn, access, refresh } = useAuth();
   return (
     <MainWrapper>
       <StyledNav>
         <Logo>Formik</Logo>
         <UL>
-          {loggedInNavs.map((item) => (
-            <NavItem key={item.id} label={item.label} link={item.link} />
-          ))}
+          {(!isLoggedIn || !access || !refresh) &&
+            loggedOutNavs.map((item) => (
+              <NavItem key={item.id} label={item.label} link={item.link} />
+            ))}
+          {isLoggedIn &&
+            access &&
+            refresh &&
+            loggedInNavs.map((item) => (
+              <NavItem key={item.id} label={item.label} link={item.link} />
+            ))}
         </UL>
       </StyledNav>
     </MainWrapper>

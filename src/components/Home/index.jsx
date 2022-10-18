@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "../../hooks/useAuth";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { FormWrapper } from "../../shared/StyledElements";
 
 const MainWrapper = styled.div`
@@ -29,6 +32,11 @@ const Heading = styled.h2`
 `;
 
 const Home = () => {
+  const navigate = useNavigate();
+  const { isLoggedIn, access } = useAuth();
+  console.log(access);
+  if (!isLoggedIn) navigate("login", { replace: true });
+
   return (
     <MainWrapper>
       <Container>

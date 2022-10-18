@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink, Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 
 const LI = styled.li`
   display: flex;
@@ -29,9 +30,22 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 const NavItem = ({ label, link }) => {
+  const { setIsLoggedIn, setAccess, setRefresh } = useAuth();
   return (
     <LI>
-      <StyledNavLink to={link}>{label}</StyledNavLink>{" "}
+      <StyledNavLink
+        to={link}
+        onClick={(e) => {
+          if (link === "logout") {
+            setAccess(null);
+            setRefresh(null);
+            setIsLoggedIn(false);
+            console.log("From Logout");
+          }
+        }}
+      >
+        {label}
+      </StyledNavLink>{" "}
     </LI>
   );
 };

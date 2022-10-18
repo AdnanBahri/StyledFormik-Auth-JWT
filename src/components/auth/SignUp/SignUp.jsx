@@ -11,6 +11,7 @@ import { Field, Formik } from "formik";
 import Button from "../../../UI/forms/Button/Button";
 import { SignUpSchema } from "../../schemas/SignUpSchema";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { register } from "../../../shared/AuthServices";
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -64,9 +65,9 @@ const FieldContainer = styled.div`
 
 const SignUp = () => {
   let navigate = useNavigate();
-  const onSubmit = (values, state) => {
-    console.log("values", values);
-    console.log("state", state);
+  const onSubmit = async (values, state) => {
+    const response = await register(values);
+    console.log("Log From SignUp", response);
   };
   return (
     <MainWrapper>
@@ -75,12 +76,25 @@ const SignUp = () => {
           <Heading>Sign Up for an account</Heading>
           <Heading1>Fill in your details to register your new account</Heading1>
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{
+              username: "",
+              firstName: "",
+              lastName: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+            }}
             validationSchema={SignUpSchema}
-            onSubmit
+            onSubmit={onSubmit}
           >
             {(props) => (
               <StyledForm>
+                <Field
+                  type="text"
+                  name="username"
+                  placeholder="Enter your Username"
+                  component={Input}
+                />
                 <Field
                   type="text"
                   name="firstName"
@@ -111,7 +125,7 @@ const SignUp = () => {
                   placeholder="Password Confirmation"
                   component={Input}
                 />
-                <Button isSubmitting={props.isSubmitting}>Submit</Button>
+                <Button isSubmitting={false}>Submit</Button>
               </StyledForm>
             )}
           </Formik>

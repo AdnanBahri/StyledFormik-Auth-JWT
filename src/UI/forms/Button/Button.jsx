@@ -14,6 +14,7 @@ const StyledButton = styled.button`
   background-color: var(--color-green-dark);
   border: none;
   transition: all 0.2s;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-3px);
@@ -25,6 +26,7 @@ const StyledButton = styled.button`
 
   &:disabled {
     opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 
